@@ -108,7 +108,6 @@ public class ClientActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.e(MainActivity.TAG,"ES LA MERDA");
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            assert device != null;
             String exemple = "Device found : " + device.getName();
             Log.e(MainActivity.TAG, device.getName());
             Toast.makeText(getApplicationContext(), "GRATON", Toast.LENGTH_SHORT).show();
