@@ -21,11 +21,11 @@ public class ClientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_client);
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 
         registerReceiver(mReceiver, filter);
+        registerReceiver(discoveryResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
         if(!adapter.isDiscovering()) {
             adapter.startDiscovery();
         }
@@ -36,22 +36,27 @@ public class ClientActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)){
-                Toast.makeText(getApplicationContext(), "raton", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Starting Discovery ...", Toast.LENGTH_LONG).show();
             }
             else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)){
-                Toast.makeText(getApplicationContext(), "castor", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Discovery Done", Toast.LENGTH_SHORT).show();
             }
-            else if(BluetoothDevice.ACTION_FOUND.equals(action)){
-                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                String exemple = "Device found : " + device.getName();
-                Toast.makeText(getApplicationContext(), "zizi", Toast.LENGTH_LONG).show();
-            }
+        }
+    };
+
+    private final BroadcastReceiver discoveryResult = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            String exemple = "Device found : " + device.getName();
+            Toast.makeText(getApplicationContext(), "zizi", Toast.LENGTH_SHORT).show();
         }
     };
 
     @Override
     protected void onDestroy() {
         unregisterReceiver(mReceiver);
+        unregisterReceiver(discoveryResult);
         super.onDestroy();
     }
 }
