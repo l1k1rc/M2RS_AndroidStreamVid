@@ -1,20 +1,31 @@
 package com.example.m2rs_androidstreamvid;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -32,6 +43,8 @@ public class ClientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_client);
         final ListView listView = (ListView) findViewById(R.id.myListView);
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+
+        runtimePermission();
         if (adapter==null){
             Toast.makeText(getApplicationContext(), "Bluetooth not activated ...", Toast.LENGTH_SHORT).show();
         }
@@ -93,8 +106,11 @@ public class ClientActivity extends AppCompatActivity {
     private final BroadcastReceiver discoveryResult = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e(MainActivity.TAG,"ES LA MERDA");
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            assert device != null;
             String exemple = "Device found : " + device.getName();
+            Log.e(MainActivity.TAG, device.getName());
             Toast.makeText(getApplicationContext(), "GRATON", Toast.LENGTH_SHORT).show();
         }
     };
@@ -104,5 +120,29 @@ public class ClientActivity extends AppCompatActivity {
         unregisterReceiver(mReceiver);
         unregisterReceiver(discoveryResult);
         super.onDestroy();
+    }
+    /**
+     * To ask the permission to the user to have an access in his external storage
+     **/
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public void runtimePermission() {
+        Log.i(MainActivity.TAG, "MainActivity onBind");
+        Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(new PermissionListener() {
+            @Override// if the permission is accepted, we launch the displaying of the music
+            public void onPermissionGranted(PermissionGrantedResponse response) {
+                Log.i(MainActivity.TAG, "Permission granted");
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse response) {
+
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).check();
     }
 }
