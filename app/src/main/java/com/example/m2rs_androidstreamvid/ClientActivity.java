@@ -1,5 +1,6 @@
 package com.example.m2rs_androidstreamvid;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.bluetooth.BluetoothAdapter;
@@ -14,12 +15,27 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class ClientActivity extends AppCompatActivity {
+    private final static int REQUEST_CODE_ENABLE_BLUETOOTH = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter==null){
+            Toast.makeText(getApplicationContext(), "Bluetooth not activated ...", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            if(!adapter.isEnabled()){
+                Toast.makeText(getApplicationContext(), "Bluetooth not activated ...", Toast.LENGTH_SHORT).show();
+                Intent activateBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(activateBluetooth, REQUEST_CODE_ENABLE_BLUETOOTH);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Bluetooth activated ...", Toast.LENGTH_SHORT).show();
+            }
+        }
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
@@ -28,6 +44,19 @@ public class ClientActivity extends AppCompatActivity {
         registerReceiver(discoveryResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
         if(!adapter.isDiscovering()) {
             adapter.startDiscovery();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode != REQUEST_CODE_ENABLE_BLUETOOTH)
+            return;
+        if(resultCode == RESULT_OK){
+            Toast.makeText(getApplicationContext(), "Bluetooth activated ...", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Bluetooth not activated ...", Toast.LENGTH_SHORT).show();
         }
     }
 
