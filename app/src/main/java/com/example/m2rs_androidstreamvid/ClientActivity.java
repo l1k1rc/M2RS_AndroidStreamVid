@@ -12,19 +12,25 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class ClientActivity extends AppCompatActivity {
     private final static int REQUEST_CODE_ENABLE_BLUETOOTH = 0;
     private Set<BluetoothDevice> devices;
+    private ArrayList<String> listNameDevice = new ArrayList<String>();
+    private ArrayList<String> listUURIDevice = new ArrayList<String>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
+        final ListView listView = (ListView) findViewById(R.id.myListView);
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (adapter==null){
             Toast.makeText(getApplicationContext(), "Bluetooth not activated ...", Toast.LENGTH_SHORT).show();
@@ -37,19 +43,23 @@ public class ClientActivity extends AppCompatActivity {
             }
             else{
                 Toast.makeText(getApplicationContext(), "Bluetooth activated ...", Toast.LENGTH_SHORT).show();
-            }
-            devices = adapter.getBondedDevices();
-            for (BluetoothDevice deviceBlu : devices){
-                Log.e(MainActivity.TAG, deviceBlu.getAddress());
-            }
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+                devices = adapter.getBondedDevices();
+                for (BluetoothDevice deviceBlu : devices){
+                    listNameDevice.add(deviceBlu.getName());
+                    listUURIDevice.add(deviceBlu.getUuids().toString());
+                    Log.e(MainActivity.TAG, deviceBlu.getName());
+                }
+                ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(ClientActivity.this, android.R.layout.simple_list_item_1, listNameDevice);
+                listView.setAdapter(myAdapter);
+                IntentFilter filter = new IntentFilter();
+                filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+                filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 
-            registerReceiver(mReceiver, filter);
-            registerReceiver(discoveryResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
-            if(!adapter.isDiscovering()) {
-                adapter.startDiscovery();
+                registerReceiver(mReceiver, filter);
+                registerReceiver(discoveryResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+                if(!adapter.isDiscovering()) {
+                    adapter.startDiscovery();
+                }
             }
         }
     }
