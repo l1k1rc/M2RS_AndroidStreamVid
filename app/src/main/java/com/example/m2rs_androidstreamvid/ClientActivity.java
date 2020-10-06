@@ -42,7 +42,7 @@ public class ClientActivity extends AppCompatActivity {
             for (BluetoothDevice deviceBlu : devices){
                 Toast.makeText(getApplicationContext(), "Device = " + deviceBlu.getName(), Toast.LENGTH_SHORT).show();
             }
-            IntentFilter filter = new IntentFilter();
+            /*IntentFilter filter = new IntentFilter();
             filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
             filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 
@@ -50,7 +50,7 @@ public class ClientActivity extends AppCompatActivity {
             registerReceiver(discoveryResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
             if(!adapter.isDiscovering()) {
                 adapter.startDiscovery();
-            }
+            }*/
         }
     }
 

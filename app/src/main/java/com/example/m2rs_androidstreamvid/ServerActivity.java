@@ -32,6 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
+@SuppressWarnings("ALL")
 public class ServerActivity extends AppCompatActivity {
 
     private final int TIMEOUT_CONNECTION = 5000;//5sec
@@ -50,7 +51,10 @@ public class ServerActivity extends AppCompatActivity {
         btnDonwload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
+                Toast.makeText(ServerActivity.this, "Start downloading...", Toast.LENGTH_SHORT).show();
                 new DownloadFileFromURL().execute(downloadUrl);
+
+                Toast.makeText(ServerActivity.this, "File successfully downloaded..", Toast.LENGTH_SHORT).show();
             }
         });
     }

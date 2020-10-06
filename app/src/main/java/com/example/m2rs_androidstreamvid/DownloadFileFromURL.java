@@ -11,11 +11,11 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+@SuppressWarnings("ALL")
 class DownloadFileFromURL extends AsyncTask<String, String, String> {
-
     /**
      * Before starting background thread
-     * */
+     */
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -24,14 +24,14 @@ class DownloadFileFromURL extends AsyncTask<String, String, String> {
 
     /**
      * Downloading file in background thread
-     * */
+     */
     @Override
     protected String doInBackground(String... f_url) {
         int count;
         try {
             String root = Environment.getExternalStorageDirectory().toString();
 
-            System.out.println("Downloading");
+            Log.i(MainActivity.TAG, "DOWNLOADING");
             URL url = new URL(f_url[0]);
 
             URLConnection conection = url.openConnection();
@@ -44,7 +44,7 @@ class DownloadFileFromURL extends AsyncTask<String, String, String> {
 
             // Output stream to write file
 
-            OutputStream output = new FileOutputStream(root+"/downloadedfile.mp4");
+            OutputStream output = new FileOutputStream(root + "/downloadedfile.mp4");
             byte data[] = new byte[1024];
 
             long total = 0;
@@ -71,13 +71,12 @@ class DownloadFileFromURL extends AsyncTask<String, String, String> {
     }
 
 
-
     /**
      * After completing background task
-     * **/
+     **/
     @Override
     protected void onPostExecute(String file_url) {
-        System.out.println("Downloaded");
+        Log.i(MainActivity.TAG, "FILE SUCCESSFULLY DOWNLOADED.");
     }
 
 }
