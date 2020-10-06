@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -55,26 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
         for(String str : s)
             Log.i(MainActivity.TAG,str);
-    }
-    public void init(BluetoothAdapter bluetoothAdapter, ServiceListenerCallback callback) {
-        mListenerCallback = callback;
-        if (mBluetoothAdapter != null || mBluetoothServerSocket != null) {
-            return;
-        }
-        mBluetoothAdapter = bluetoothAdapter;
-        BluetoothServerSocket tmp = null;
-        try {
-            // 明文传输，无需配对
-            // adapter.listenUsingInsecureRfcommWithServiceRecord(TAG, SPP_UUID);
-            // 加密传输，会自动执行配对
-            tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord(CbtConstant.CBT_NAME, CbtConstant.CBT_UUID);
-        } catch (IOException e) {
-            mListenerCallback.onStartError(e);
-            CbtLogs.e(e.getMessage());
-            return;
-        }
-        mBluetoothServerSocket = tmp;
-        listener();
+
+
     }
 
 }
