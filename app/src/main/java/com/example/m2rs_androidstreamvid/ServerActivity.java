@@ -50,7 +50,7 @@ public class ServerActivity extends AppCompatActivity {
         btnDonwload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                new DownloadFileFromURL().execute("http://www.example.com/IMG.jpg");
+                new DownloadFileFromURL().execute(downloadUrl);
             }
         });
     }
@@ -62,7 +62,7 @@ public class ServerActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void runtimePermission() {
         Log.i(MainActivity.TAG, "MainActivity onBind");
-        Dexter.withActivity(this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE).withListener(new PermissionListener() {
+        Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(new PermissionListener() {
             @Override// if the permission is accepted, we launch the displaying of the music
             public void onPermissionGranted(PermissionGrantedResponse response) {
                 Log.i(MainActivity.TAG, "Permission granted");
