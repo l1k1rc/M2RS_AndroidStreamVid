@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">M2RS_AndroidStreamVid</string>
+    <string name="btnStringServer">Server</string>
+    <string name="btnStringClient">Client</string>
 </resources>
