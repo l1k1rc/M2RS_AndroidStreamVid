@@ -95,7 +95,7 @@ public class ClientActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             String exemple = "Device found : " + device.getName();
-            Toast.makeText(getApplicationContext(), "zizi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "GRATON", Toast.LENGTH_SHORT).show();
         }
     };
 
