@@ -3,4 +3,6 @@
     <string name="btnStringServer">Server</string>
     <string name="btnStringClient">Client</string>
     <string name="maintTitle">Ceci est un gros texte mais ce truc pu la merde c est vraiment nul à chier</string>
+    <string name="url_website_containing_video_file">URL Website containing video file</string>
+    <string name="download">Download</string>
 </resources>
