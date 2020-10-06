@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Perform action on click
                 Log.i("TAG", "TETS");
-                startActivity(new Intent(MainActivity.this, ClientActivity.class));
+                startActivity(new Intent(MainActivity.this, ServerActivity.class));
             }
         });
 
