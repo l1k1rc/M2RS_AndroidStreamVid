@@ -2,4 +2,5 @@
     <string name="app_name">M2RS_AndroidStreamVid</string>
     <string name="btnStringServer">Server</string>
     <string name="btnStringClient">Client</string>
+    <string name="maintTitle">Ceci est un gros texte mais ce truc pu la merde c est vraiment nul à chier</string>
 </resources>

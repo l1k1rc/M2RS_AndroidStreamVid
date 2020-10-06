@@ -27,19 +27,19 @@
             android:src="@drawable/phone_background" />
 
         <TextView
-            android:id="@+id/songText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:ellipsize="marquee"
-            android:gravity="center_horizontal"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:text="Ceci est un TEXTE putain de merde de bordel à cul"
+            android:text="@string/maintTitle"
+            android:id="@+id/songText"
             android:textAlignment="center"
+            android:textSize="22sp"
+            android:layout_marginTop="20dp"
+            android:singleLine="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
             android:textColor="@color/colorPrimary"
-            android:textSize="22sp" />
+            />
     </LinearLayout>
 
     <LinearLayout
