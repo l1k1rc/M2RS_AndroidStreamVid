@@ -57,6 +57,7 @@ public class ServerActivity extends AppCompatActivity {
                 Toast.makeText(ServerActivity.this, "File successfully downloaded..", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     /**

@@ -27,18 +27,18 @@
             android:src="@drawable/phone_background" />
 
         <TextView
-            android:id="@+id/songText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:ellipsize="marquee"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
             android:text="@string/maintTitle"
+            android:id="@+id/songText"
             android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:layout_marginTop="20dp"
+            android:singleLine="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:textColor="#000000"/>
     </LinearLayout>
 
     <LinearLayout
