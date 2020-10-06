@@ -14,8 +14,11 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Set;
+
 public class ClientActivity extends AppCompatActivity {
     private final static int REQUEST_CODE_ENABLE_BLUETOOTH = 0;
+    private Set<BluetoothDevice> devices;
 
 
     @Override
@@ -35,15 +38,19 @@ public class ClientActivity extends AppCompatActivity {
             else{
                 Toast.makeText(getApplicationContext(), "Bluetooth activated ...", Toast.LENGTH_SHORT).show();
             }
-        }
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+            devices = adapter.getBondedDevices();
+            for (BluetoothDevice deviceBlu : devices){
+                Toast.makeText(getApplicationContext(), "Device = " + deviceBlu.getName(), Toast.LENGTH_SHORT).show();
+            }
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 
-        registerReceiver(mReceiver, filter);
-        registerReceiver(discoveryResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
-        if(!adapter.isDiscovering()) {
-            adapter.startDiscovery();
+            registerReceiver(mReceiver, filter);
+            registerReceiver(discoveryResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+            if(!adapter.isDiscovering()) {
+                adapter.startDiscovery();
+            }
         }
     }
 
