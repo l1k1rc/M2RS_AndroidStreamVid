@@ -34,15 +34,15 @@ public class ClientActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)){
-
+                Toast.makeText(getApplicationContext(), "raton", Toast.LENGTH_LONG).show();
             }
             else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)){
-
+                Toast.makeText(getApplicationContext(), "castor", Toast.LENGTH_LONG).show();
             }
             else if(BluetoothDevice.ACTION_FOUND.equals(action)){
                 BluetoothDevice device = (BluetoothDevice) intent .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String exemple = "Device found : " + device.getName();
-                Toast.makeText(getApplicationContext(), exemple, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "zizi", Toast.LENGTH_LONG).show();
             }
         }
     };
