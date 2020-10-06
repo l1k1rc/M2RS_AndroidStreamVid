@@ -26,7 +26,9 @@ public class ClientActivity extends AppCompatActivity {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 
         registerReceiver(mReceiver, filter);
-        adapter.startDiscovery();
+        if(!adapter.isDiscovering()) {
+            adapter.startDiscovery();
+        }
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -40,7 +42,7 @@ public class ClientActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "castor", Toast.LENGTH_LONG).show();
             }
             else if(BluetoothDevice.ACTION_FOUND.equals(action)){
-                BluetoothDevice device = (BluetoothDevice) intent .getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String exemple = "Device found : " + device.getName();
                 Toast.makeText(getApplicationContext(), "zizi", Toast.LENGTH_LONG).show();
             }
