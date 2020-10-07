@@ -39,7 +39,7 @@ public class ServerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Perform action on click
                 Toast.makeText(ServerActivity.this, "Start downloading...", Toast.LENGTH_SHORT).show();
-                //new DownloadFileFromURL().execute(downloadUrl);
+                new DownloadFileFromURL().execute(downloadUrl);
 
                 Toast.makeText(ServerActivity.this, autoTextView.getText().toString(), Toast.LENGTH_SHORT).show();
             }
