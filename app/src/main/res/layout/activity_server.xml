@@ -17,8 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.536" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewUrl"
+        app:layout_constraintVertical_bias="0.087" />
 
     <MultiAutoCompleteTextView
         android:id="@+id/textViewUrl"
@@ -46,5 +46,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewUrl"
         app:layout_constraintVertical_bias="0.0" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="205dp"
+        android:layout_marginLeft="205dp"
+        android:layout_marginTop="547dp"
+        android:layout_marginEnd="206dp"
+        android:layout_marginRight="206dp"
+        android:layout_marginBottom="184dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

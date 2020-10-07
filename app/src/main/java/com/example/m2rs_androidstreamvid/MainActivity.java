@@ -32,7 +32,7 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "LOG_TAG";
-
+    public static final String UUID_CONNECTION = "00001101-0000-1000-8000-00805F9B34FB";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

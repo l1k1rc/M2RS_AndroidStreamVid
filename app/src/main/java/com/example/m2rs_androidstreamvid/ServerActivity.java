@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,8 @@ public class ServerActivity extends AppCompatActivity {
 
     private final int TIMEOUT_CONNECTION = 5000;//5sec
     private final int TIMEOUT_SOCKET = 30000;//30sec
+    private ProgressBar spinner;
+    private boolean serverUp = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class ServerActivity extends AppCompatActivity {
         final MultiAutoCompleteTextView autoTextView = (MultiAutoCompleteTextView) findViewById(R.id.textViewUrl);
         final TextView errorExpected = (TextView) findViewById(R.id.errorExpected);
 
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.GONE);
         btnDonwload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -48,7 +53,16 @@ public class ServerActivity extends AppCompatActivity {
                 }
                 Toast.makeText(ServerActivity.this, autoTextView.getText().toString(), Toast.LENGTH_SHORT).show();
                 */
-                new AcceptThread().start();
+                if (!serverUp) {
+                    serverUp = true;
+                    spinner.setVisibility(View.VISIBLE);
+                    new AcceptThread().start();
+                }else {
+                    serverUp = false;
+                    spinner.setVisibility(View.GONE);
+                    new AcceptThread().interrupt();
+                }
+
             }
         });
 
@@ -77,12 +91,13 @@ public class ServerActivity extends AppCompatActivity {
     }
 
     private class AcceptThread extends Thread {
-        private BluetoothServerSocket mBluetoothServerSocket ;
+        private BluetoothServerSocket mBluetoothServerSocket;
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
         public AcceptThread() {
             try {
                 Log.e(MainActivity.TAG, "AcceptThread LOG");
-                mBluetoothServerSocket = mBluetoothAdapter.listenUsingRfcommWithServiceRecord("BT_SERVER", UUID.fromString("a60f35f0-b93a-11de-8a39-08002009c666"));
+                mBluetoothServerSocket = mBluetoothAdapter.listenUsingRfcommWithServiceRecord("BT_SERVER", UUID.fromString(MainActivity.UUID_CONNECTION));
             } catch (IOException e) {
                 Log.e("MainActivity", e.getMessage());
             }
@@ -94,7 +109,7 @@ public class ServerActivity extends AppCompatActivity {
             Log.e(MainActivity.TAG, "In run thread LOG");
 
             // Keep listening until exception occurs or a socket is returned
-            while(true) {
+            while (true) {
                 try {
                     Log.e(MainActivity.TAG, "Bluetooth socket accept");
 
@@ -104,14 +119,14 @@ public class ServerActivity extends AppCompatActivity {
                 }
 
                 // If a connection was accepted
-                if(mBluetoothSocket != null) {
+                if (mBluetoothSocket != null) {
                     // transfer the data here
                     Log.e(MainActivity.TAG, "Socket created !!!");
-                    Toast.makeText(ServerActivity.this, "Socket is created", Toast.LENGTH_LONG).show();;
                     try {
                         // close the connection to stop to listen any connection now
                         mBluetoothSocket.close();
-                    } catch(IOException e) { }
+                    } catch (IOException e) {
+                    }
                 }
             }
         }

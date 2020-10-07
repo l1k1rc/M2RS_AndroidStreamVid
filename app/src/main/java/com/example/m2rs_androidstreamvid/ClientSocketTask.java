@@ -23,7 +23,7 @@ public class ClientSocketTask extends AsyncTask<Void, Void, Void> {
     private AppCompatActivity mCurrentActivity = null;
     private String mAddress = null;
 
-    private static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final UUID myUUID = UUID.fromString(MainActivity.UUID_CONNECTION);
 
     ClientSocketTask(AppCompatActivity activity, String address) {
         mCurrentActivity = activity;
