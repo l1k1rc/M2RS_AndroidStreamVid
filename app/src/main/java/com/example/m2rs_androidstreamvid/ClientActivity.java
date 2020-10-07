@@ -61,6 +61,8 @@ public class ClientActivity extends AppCompatActivity {
                     listNameDevice.add(deviceBlu.getName());
                     listUURIDevice.add(deviceBlu.getUuids().toString());
                     Log.e(MainActivity.TAG, deviceBlu.getName());
+                    Log.e(MainActivity.TAG, deviceBlu.getUuids().toString());
+
                 }
                 ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(ClientActivity.this, android.R.layout.simple_list_item_1, listNameDevice);
                 listView.setAdapter(myAdapter);

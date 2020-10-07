@@ -8,32 +8,43 @@
 
     <Button
         android:id="@+id/btnDownload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="157dp"
-        android:layout_marginLeft="157dp"
-        android:layout_marginEnd="166dp"
-        android:layout_marginRight="166dp"
-        android:layout_marginBottom="340dp"
+        android:layout_width="130dp"
+        android:layout_height="47dp"
+        android:gravity="center_horizontal"
         android:text="@string/download"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.153"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.536" />
 
     <MultiAutoCompleteTextView
         android:id="@+id/textViewUrl"
         android:layout_width="280dp"
         android:layout_height="43dp"
+        android:layout_marginTop="300dp"
+        android:gravity="center_horizontal"
         android:hint="@string/url_website_containing_video_file"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/errorExpected"
+        android:layout_width="247dp"
+        android:layout_height="21dp"
+        android:gravity="center_horizontal"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/btnDownload"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.92"
-        tools:ignore="MissingConstraints"
-        android:gravity="center_horizontal" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewUrl"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
