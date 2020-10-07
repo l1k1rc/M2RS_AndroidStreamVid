@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.io.File;
 
@@ -24,11 +25,11 @@ public class ClientSocketActivity extends AppCompatActivity {
         mBluetoothConnection = new ClientSocketTask(this, mDeviceAddress);
         mBluetoothConnection.execute();
 
-        /*Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.setType("/");
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File("downloadedfile.mp4")));
-        startActivity(intent);*/
+        newIntent.setAction(Intent.ACTION_SEND);
+        newIntent.setType("/");
+        newIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File("downloadedfile.mp4")));
+        Log.e(MainActivity.TAG,"INTENT USE");
+        startActivity(newIntent);
 
     }
 

@@ -82,10 +82,12 @@ public class ServerActivity extends AppCompatActivity {
                     Log.e(MainActivity.TAG, "ACTIVE THE THREAD");
                     serverUp = true;
                     spinner.setVisibility(View.VISIBLE);
+                    btnLaunchServer.setText("Stop stream");
                     ThrSocket.start();
                 } else {
                     Log.e(MainActivity.TAG, "STOP THE THREAD");
                     serverUp = false;
+                    btnLaunchServer.setText("Launch stream");
                     spinner.setVisibility(View.GONE);
                     ThrSocket.interrupted();
                 }
