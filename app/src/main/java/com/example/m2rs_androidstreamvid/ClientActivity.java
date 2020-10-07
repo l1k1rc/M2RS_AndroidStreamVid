@@ -16,8 +16,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.karumi.dexter.Dexter;
@@ -35,6 +38,7 @@ public class ClientActivity extends AppCompatActivity {
     private Set<BluetoothDevice> devices;
     private ArrayList<String> listNameDevice = new ArrayList<String>();
     private ArrayList<String> listUURIDevice = new ArrayList<String>();
+    public static String EXTRA_ADDRESS = "device_address";
 
 
     @Override
@@ -58,21 +62,21 @@ public class ClientActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Bluetooth activated ...", Toast.LENGTH_SHORT).show();
                 devices = adapter.getBondedDevices();
                 for (BluetoothDevice deviceBlu : devices){
-                    listNameDevice.add(deviceBlu.getName());
-                    listUURIDevice.add(deviceBlu.getUuids().toString());
+                    listNameDevice.add(deviceBlu.getName() + "\n" + deviceBlu.getAddress());
                     Log.e(MainActivity.TAG, deviceBlu.getName());
+                    Log.e(MainActivity.TAG, deviceBlu.getUuids().toString());
                 }
                 ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(ClientActivity.this, android.R.layout.simple_list_item_1, listNameDevice);
                 listView.setAdapter(myAdapter);
+                listView.setOnItemClickListener(myListClickListener);
                 IntentFilter filter = new IntentFilter();
                 filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
                 filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-
-                registerReceiver(mReceiver, filter);
-                registerReceiver(discoveryResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
                 if(!adapter.isDiscovering()) {
                     adapter.startDiscovery();
                 }
+                registerReceiver(mReceiver, filter);
+                registerReceiver(discoveryResult, new IntentFilter(BluetoothDevice.ACTION_FOUND));
             }
         }
     }
@@ -111,6 +115,21 @@ public class ClientActivity extends AppCompatActivity {
             String exemple = "Device found : " + device.getName();
             Log.e(MainActivity.TAG, device.getName());
             Toast.makeText(getApplicationContext(), "GRATON", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private AdapterView.OnItemClickListener myListClickListener = new AdapterView.OnItemClickListener()
+    {
+        public void onItemClick (AdapterView av, View v, int arg2, long arg3)
+        {
+            // Get the device MAC address, the last 17 chars in the View
+            String info = ((TextView) v).getText().toString();
+            String address = info.substring(info.length() - 17);
+            // Make an intent to start next activity.
+            Intent i = new Intent(ClientActivity.this, ClientSocketActivity.class);
+            //Change the activity.
+            i.putExtra(EXTRA_ADDRESS, address); //this will be received at CommunicationsActivity
+            startActivity(i);
         }
     };
 
