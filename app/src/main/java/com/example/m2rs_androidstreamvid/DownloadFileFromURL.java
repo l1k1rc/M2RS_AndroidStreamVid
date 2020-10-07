@@ -1,8 +1,11 @@
 package com.example.m2rs_androidstreamvid;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -13,6 +16,7 @@ import java.net.URLConnection;
 
 @SuppressWarnings("ALL")
 class DownloadFileFromURL extends AsyncTask<String, String, String> {
+
     /**
      * Before starting background thread
      */
