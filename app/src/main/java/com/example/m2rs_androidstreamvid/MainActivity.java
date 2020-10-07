@@ -1,18 +1,29 @@
 package com.example.m2rs_androidstreamvid;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         final Button serverButton = (Button) findViewById(R.id.btnServer);
         final TextView titleView = (TextView) findViewById(R.id.songText);
 
+        runtimePermission();
         titleView.setSelected(true);
         clientButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -58,6 +70,30 @@ public class MainActivity extends AppCompatActivity {
             Log.i(MainActivity.TAG,str);
 
 
+    }
+    /**
+     * To ask the permission to the user to have an access in his external storage
+     **/
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public void runtimePermission() {
+        Log.i(MainActivity.TAG, "MainActivity onBind");
+        Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(new PermissionListener() {
+            @Override// if the permission is accepted, we launch the displaying of the music
+            public void onPermissionGranted(PermissionGrantedResponse response) {
+                Log.i(MainActivity.TAG, "Permission granted");
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedResponse response) {
+
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }).check();
     }
 
 }
