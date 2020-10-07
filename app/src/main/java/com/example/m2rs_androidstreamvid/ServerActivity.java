@@ -3,6 +3,7 @@ package com.example.m2rs_androidstreamvid;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.ContentValues;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -93,7 +94,13 @@ public class ServerActivity extends AppCompatActivity {
                 }
             }
         });
-
+        /*ContentValues values = new ContentValues();
+        values.put(BluetoothShare.URI, "file:///sdcard/refresh.txt");
+        values.put(BluetoothShare.DESTINATION, deviceAddress);
+        values.put(BluetoothShare.DIRECTION, BluetoothShare.DIRECTION_OUTBOUND);
+        Long ts = System.currentTimeMillis();
+        values.put(BluetoothShare.TIMESTAMP, ts);
+        getContentResolver().insert(BluetoothShare.CONTENT_URI, values);*/
 
     }
 
