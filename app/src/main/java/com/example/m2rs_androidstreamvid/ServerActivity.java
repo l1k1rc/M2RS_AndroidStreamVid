@@ -4,7 +4,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -43,6 +45,7 @@ public class ServerActivity extends AppCompatActivity {
     private TextView isAClientConnected;
     private Button btnDonwload;
     private Button btnLaunchServer;
+    private Button btnSendFile;
     private MultiAutoCompleteTextView autoTextView;
 
     @Override
@@ -52,6 +55,7 @@ public class ServerActivity extends AppCompatActivity {
 
         btnDonwload = (Button) findViewById(R.id.btnDownload);
         btnLaunchServer = (Button) findViewById(R.id.btnLaunchServer);
+        btnSendFile = (Button) findViewById(R.id.btnSendFile);
         autoTextView = (MultiAutoCompleteTextView) findViewById(R.id.textViewUrl);
 
         //final String downloadUrl = "https://ia800201.us.archive.org/22/items/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
@@ -92,6 +96,18 @@ public class ServerActivity extends AppCompatActivity {
                     spinner.setVisibility(View.GONE);
                     ThrSocket.interrupted();
                 }
+            }
+        });
+        btnSendFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.setType("Download/*");
+
+                String uri = "Download/1c2.jpg";
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(uri)));
+                startActivity(intent);
             }
         });
         /*ContentValues values = new ContentValues();
