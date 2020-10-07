@@ -22,8 +22,8 @@
 
     <MultiAutoCompleteTextView
         android:id="@+id/textViewUrl"
-        android:layout_width="280dp"
-        android:layout_height="43dp"
+        android:layout_width="281dp"
+        android:layout_height="61dp"
         android:layout_marginTop="300dp"
         android:gravity="center_horizontal"
         android:hint="@string/url_website_containing_video_file"

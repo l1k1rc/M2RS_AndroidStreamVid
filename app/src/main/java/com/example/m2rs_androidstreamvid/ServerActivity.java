@@ -35,33 +35,40 @@ public class ServerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
 
-        final String downloadUrl = "https://ia800201.us.archive.org/22/items/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
         final Button btnDonwload = (Button) findViewById(R.id.btnDownload);
         final MultiAutoCompleteTextView autoTextView = (MultiAutoCompleteTextView) findViewById(R.id.textViewUrl);
         final TextView errorExpected = (TextView) findViewById(R.id.errorExpected);
+
+        //final String downloadUrl = "https://ia800201.us.archive.org/22/items/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
 
         spinner = (ProgressBar)findViewById(R.id.progressBar1);
         spinner.setVisibility(View.GONE);
         btnDonwload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-                /*Toast.makeText(ServerActivity.this, "Start downloading...", Toast.LENGTH_SHORT).show();
-                new DownloadFileFromURL().execute(downloadUrl);
+                String downloadUrl = autoTextView.getText().toString();
+                Toast.makeText(ServerActivity.this, "Start downloading...", Toast.LENGTH_SHORT).show();
                 if (!isValid(downloadUrl)) {
                     errorExpected.setTextColor(Color.rgb(200, 0, 0));
                     errorExpected.setText("Error : file isn't a video. (.mp4, .wav)");
+                }else {
+                    new DownloadFileFromURL().execute(downloadUrl);
+                    errorExpected.setText("");
                 }
                 Toast.makeText(ServerActivity.this, autoTextView.getText().toString(), Toast.LENGTH_SHORT).show();
-                */
+
+                /*AcceptThread ThrSocket = new AcceptThread();
                 if (!serverUp) {
+                    Log.e(MainActivity.TAG, "ACTIVE THE THREAD");
                     serverUp = true;
                     spinner.setVisibility(View.VISIBLE);
-                    new AcceptThread().start();
+                    ThrSocket.start();
                 }else {
+                    Log.e(MainActivity.TAG,"STOP THE THREAD");
                     serverUp = false;
                     spinner.setVisibility(View.GONE);
-                    new AcceptThread().interrupt();
-                }
+                    ThrSocket.interrupted();
+                }*/
 
             }
         });
