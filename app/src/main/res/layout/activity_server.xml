@@ -18,18 +18,30 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewUrl"
-        app:layout_constraintVertical_bias="0.087" />
+        app:layout_constraintVertical_bias="0.048" />
+
+    <Button
+        android:id="@+id/btnLaunchServer"
+        android:layout_width="172dp"
+        android:layout_height="44dp"
+        android:gravity="center_horizontal"
+        android:text="@string/launch_str"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDownload" />
 
     <MultiAutoCompleteTextView
         android:id="@+id/textViewUrl"
         android:layout_width="281dp"
         android:layout_height="61dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="188dp"
         android:gravity="center_horizontal"
         android:hint="@string/url_website_containing_video_file"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -64,5 +76,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/isAClientConnected"
+        android:layout_width="237dp"
+        android:layout_height="22dp"
+        android:gravity="center_horizontal"
+        android:text="No client connected"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/textViewUrl"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

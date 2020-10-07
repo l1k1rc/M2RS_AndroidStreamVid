@@ -1,3 +1,4 @@
+/*
 package com.example.m2rs_androidstreamvid;
 
 import android.app.Activity;
@@ -17,18 +18,13 @@ import java.net.URLConnection;
 @SuppressWarnings("ALL")
 class DownloadFileFromURL extends AsyncTask<String, String, String> {
 
-    /**
-     * Before starting background thread
-     */
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         System.out.println("Starting download");
     }
 
-    /**
-     * Downloading file in background thread
-     */
+
     @Override
     protected String doInBackground(String... f_url) {
         int count;
@@ -75,12 +71,10 @@ class DownloadFileFromURL extends AsyncTask<String, String, String> {
     }
 
 
-    /**
-     * After completing background task
-     **/
+
     @Override
     protected void onPostExecute(String file_url) {
         Log.i(MainActivity.TAG, "FILE SUCCESSFULLY DOWNLOADED.");
     }
 
-}
+}*/

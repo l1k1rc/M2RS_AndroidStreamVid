@@ -4,7 +4,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +17,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.UUID;
 
 import static androidx.core.util.Preconditions.checkNotNull;
@@ -30,52 +38,68 @@ public class ServerActivity extends AppCompatActivity {
     private ProgressBar spinner;
     private boolean serverUp = false;
 
+    private TextView errorExpected;
+    private TextView isAClientConnected;
+    private Button btnDonwload;
+    private Button btnLaunchServer;
+    private MultiAutoCompleteTextView autoTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
 
-        final Button btnDonwload = (Button) findViewById(R.id.btnDownload);
-        final MultiAutoCompleteTextView autoTextView = (MultiAutoCompleteTextView) findViewById(R.id.textViewUrl);
-        final TextView errorExpected = (TextView) findViewById(R.id.errorExpected);
+        btnDonwload = (Button) findViewById(R.id.btnDownload);
+        btnLaunchServer = (Button) findViewById(R.id.btnLaunchServer);
+        autoTextView = (MultiAutoCompleteTextView) findViewById(R.id.textViewUrl);
 
         //final String downloadUrl = "https://ia800201.us.archive.org/22/items/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
+        errorExpected = (TextView) findViewById(R.id.errorExpected);
+        isAClientConnected = (TextView)findViewById(R.id.isAClientConnected);
+        spinner = (ProgressBar) findViewById(R.id.progressBar1);
 
-        spinner = (ProgressBar)findViewById(R.id.progressBar1);
         spinner.setVisibility(View.GONE);
         btnDonwload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
                 String downloadUrl = autoTextView.getText().toString();
-                Toast.makeText(ServerActivity.this, "Start downloading...", Toast.LENGTH_SHORT).show();
                 if (!isValid(downloadUrl)) {
                     errorExpected.setTextColor(Color.rgb(200, 0, 0));
                     errorExpected.setText("Error : file isn't a video. (.mp4, .wav)");
-                }else {
+                } else {
+                    Toast.makeText(ServerActivity.this, "Start downloading...", Toast.LENGTH_SHORT).show();
                     new DownloadFileFromURL().execute(downloadUrl);
                     errorExpected.setText("");
                 }
                 Toast.makeText(ServerActivity.this, autoTextView.getText().toString(), Toast.LENGTH_SHORT).show();
-
-                /*AcceptThread ThrSocket = new AcceptThread();
+            }
+        });
+        btnLaunchServer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AcceptThread ThrSocket = new AcceptThread();
                 if (!serverUp) {
                     Log.e(MainActivity.TAG, "ACTIVE THE THREAD");
                     serverUp = true;
                     spinner.setVisibility(View.VISIBLE);
                     ThrSocket.start();
-                }else {
-                    Log.e(MainActivity.TAG,"STOP THE THREAD");
+                } else {
+                    Log.e(MainActivity.TAG, "STOP THE THREAD");
                     serverUp = false;
                     spinner.setVisibility(View.GONE);
                     ThrSocket.interrupted();
-                }*/
-
+                }
             }
         });
 
 
     }
 
+    /**
+     * Know if a file is a mp4 or wav video file.
+     * @param text : the link (url)
+     * @return a boolean.
+     */
     public boolean isValid(String text) {
         String ext = getFileExtension(text);
         Log.e(MainActivity.TAG, getFileExtension(text));
@@ -90,6 +114,11 @@ public class ServerActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * To get a file extension name.
+     * @param fullName : name of the file
+     * @return the extension
+     */
     public static String getFileExtension(String fullName) {
         checkNotNull(fullName);
         String fileName = new File(fullName).getName();
@@ -97,6 +126,9 @@ public class ServerActivity extends AppCompatActivity {
         return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
     }
 
+    /**
+     * This class allows to create a socket which listen via bluetooth. This one wait for a connection from a client socket.
+     */
     private class AcceptThread extends Thread {
         private BluetoothServerSocket mBluetoothServerSocket;
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -113,7 +145,7 @@ public class ServerActivity extends AppCompatActivity {
         @Override
         public void run() {
             BluetoothSocket mBluetoothSocket;
-            Log.e(MainActivity.TAG, "In run thread LOG");
+            Log.e(MainActivity.TAG, "thread LOG");
 
             // Keep listening until exception occurs or a socket is returned
             while (true) {
@@ -129,8 +161,11 @@ public class ServerActivity extends AppCompatActivity {
                 if (mBluetoothSocket != null) {
                     // transfer the data here
                     Log.e(MainActivity.TAG, "Socket created !!!");
+
                     try {
                         // close the connection to stop to listen any connection now
+                        errorExpected.setTextColor(Color.rgb(0, 200, 0));
+                        isAClientConnected.setText("A client is now connected");
                         mBluetoothSocket.close();
                     } catch (IOException e) {
                     }
@@ -138,5 +173,80 @@ public class ServerActivity extends AppCompatActivity {
             }
         }
     }
+
+    @SuppressWarnings("ALL")
+    private class DownloadFileFromURL extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            System.out.println("Starting download");
+        }
+
+        /**
+         * Downloading file in background thread
+         */
+        @Override
+        protected String doInBackground(String... f_url) {
+            int count;
+            try {
+                String root = Environment.getExternalStorageDirectory().toString();
+
+                Log.i(MainActivity.TAG, "DOWNLOADING");
+                URL url = new URL(f_url[0]);
+
+                URLConnection conection = url.openConnection();
+                conection.connect();
+                // getting file length
+                int lenghtOfFile = conection.getContentLength();
+
+                // input stream to read file - with 8k buffer
+                InputStream input = new BufferedInputStream(url.openStream(), 8192);
+
+                // Output stream to write file
+
+                OutputStream output = new FileOutputStream(root + "/downloadedfile.mp4");
+                byte data[] = new byte[1024];
+
+                long total = 0;
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+
+                    // writing data to file
+                    output.write(data, 0, count);
+
+                }
+
+                // flushing output
+                output.flush();
+
+                // closing streams
+                output.close();
+                input.close();
+
+            } catch (Exception e) {
+                Log.e("Error: ", e.getMessage());
+            }
+
+            return null;
+        }
+
+
+        /**
+         * After completing background task
+         **/
+        @Override
+        protected void onPostExecute(String file_url) {
+            Log.i(MainActivity.TAG, "FILE SUCCESSFULLY DOWNLOADED.");
+            errorExpected.setTextColor(Color.rgb(0, 200, 0));
+            errorExpected.setText("File successfully downloaded.");
+        }
+
+    }
+
+
 }
 
