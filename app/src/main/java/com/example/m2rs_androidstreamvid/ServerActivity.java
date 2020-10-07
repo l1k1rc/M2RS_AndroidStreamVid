@@ -214,8 +214,6 @@ public class ServerActivity extends AppCompatActivity {
                 long total = 0;
                 while ((count = input.read(data)) != -1) {
                     total += count;
-
-                    // writing data to file
                     output.write(data, 0, count);
 
                 }
