@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
 
 public class ClientSocketTask extends AsyncTask<Void, Void, Void> {
@@ -31,38 +30,40 @@ public class ClientSocketTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPreExecute()     {
+    protected void onPreExecute() {
         mProgressDialog = ProgressDialog.show(mCurrentActivity, "Connecting...", "Please wait!!!");  //show a progress dialog
     }
 
-    @Override
-    protected Void doInBackground(Void... devices) { //while the progress dialog is shown, the connection is done in background
+    /**
+     * Meanwhile the dialog is showing something to the client in order to wait, the method below allows use to run in background
+     **/
 
+    @Override
+    protected Void doInBackground(Void... devices) {
         try {
             if (mBluetoothSocket == null || !mConnected) {
-                mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();//get the mobile bluetooth device
-                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(mAddress);//connects to the device's address and checks if it's available
-                mBluetoothSocket = device.createRfcommSocketToServiceRecord(myUUID);//create a RFCOMM (SPP) connection
+                //Here we create the client socket that ask to the server if he can connect by bluetooth using an unique UUID
+                mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(mAddress);//connect to the device by using is mac adress and check if the connection is available
+                mBluetoothSocket = device.createRfcommSocketToServiceRecord(myUUID);//create a RFCOMM connection
                 BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
                 mBluetoothSocket.connect();//start connection
                 Log.e(MainActivity.TAG, "Socket connected");
             }
         }
         catch (IOException e) {
-            mConnected = false;//if the try failed, you can check the exception here
+            mConnected = false;
             Log.e(MainActivity.TAG, "error catch");
         }
         return null;
     }
+
     @Override
     protected void onPostExecute(Void result) { //after the doInBackground, it checks if everything went fine
-
         super.onPostExecute(result);
-
         if (!mConnected){
-            message("Connection Failed. Is it a SPP Bluetooth running a server? Try again.");
+            message("Connection Failed. Try again.");
             mCurrentActivity.finish();
-
         }
         else {
             message("Connected.");
@@ -70,57 +71,18 @@ public class ClientSocketTask extends AsyncTask<Void, Void, Void> {
         mProgressDialog.dismiss();
     }
 
-    public void write(byte b) {
-
-        try {
-            mBluetoothSocket.getOutputStream().write((int)b);
-        }
-        catch (IOException e) {
-        }
-    }
-
-    public int read() {
-
-        int i = -1;
-
-        try {
-            i = mBluetoothSocket.getInputStream().read();
-        }
-        catch (IOException e) {
-        }
-
-        return i;
-    }
-
-    public int available() {
-
-        int n = 0;
-
-        try {
-            n = mBluetoothSocket.getInputStream().available();
-        }
-        catch (IOException e) {
-        }
-
-        return n;
-    }
-
     public void disconnect() {
-        if (mBluetoothSocket!=null) //If the btSocket is busy
-        {
+        if (mBluetoothSocket!=null) {
             try  {
-                mBluetoothSocket.close(); //close connection
+                mBluetoothSocket.close();
             }
             catch (IOException e) {
                 message("Error");
             }
         }
-
         message("Disconnected");
-
         mCurrentActivity.finish();
     }
-
 
     private void message(String s) {
         Toast.makeText(mCurrentActivity.getApplicationContext(),s, Toast.LENGTH_LONG).show();

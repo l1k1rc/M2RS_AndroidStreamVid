@@ -25,15 +25,14 @@ public class ClientSocketActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_socket);
-
+        //this button allow us to refresh the app
         btnRefresh = (Button) findViewById(R.id.btnRefresh);
-
         Intent newIntent = getIntent();
+        //we get the mac adress device that is sent by the Client Activity via an intent
         mDeviceAddress = newIntent.getStringExtra(ClientActivity.EXTRA_ADDRESS);
-
+        //initiate the background task of the client socket
         mBluetoothConnection = new ClientSocketTask(this, mDeviceAddress);
         mBluetoothConnection.execute();
-
 
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +42,6 @@ public class ClientSocketActivity extends AppCompatActivity {
             }
         });
 
-
         VideoView vidView = (VideoView)findViewById(R.id.video);
 
         // Add playback controls.
@@ -52,13 +50,12 @@ public class ClientSocketActivity extends AppCompatActivity {
         vidControl.setAnchorView(vidView);
         // Set it as the media controller for the VideoView object.
         vidView.setMediaController(vidControl);
-
+        //stock the External Storage directory where our video file is
         File dir = Environment.getExternalStorageDirectory();
         File manualFile = new File(dir, "/" + "Download/downloadedfile.mp4");
         Log.e(MainActivity.TAG,"CLIENT FILE LOCATION : "+manualFile);
 
         Uri uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", manualFile);
-        // Parse the address string as a URI so that we can pass it to the VideoView object.
         vidView.setVideoURI(uri);
         // Start playback.
         vidView.start();
