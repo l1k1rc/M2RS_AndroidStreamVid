@@ -1,10 +1,12 @@
 package com.example.m2rs_androidstreamvid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -43,11 +45,13 @@ public class ClientSocketActivity extends AppCompatActivity {
         // Set it as the media controller for the VideoView object.
         vidView.setMediaController(vidControl);
 
-        // Prepare the URI for the endpoint.
-        String vidAddress = "android.resource://" + getPackageName() + "/" + R.raw.video;
-        Uri vidUri = Uri.parse(vidAddress);
+        File dir = Environment.getExternalStorageDirectory();
+        File manualFile = new File(dir, "/" + "/downloadedfile.mp4");
+        Log.e(MainActivity.TAG,"CLIENT FILE LOCATION : "+manualFile);
+
+        Uri uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", manualFile);
         // Parse the address string as a URI so that we can pass it to the VideoView object.
-        vidView.setVideoURI(vidUri);
+        vidView.setVideoURI(uri);
         // Start playback.
         vidView.start();
 
