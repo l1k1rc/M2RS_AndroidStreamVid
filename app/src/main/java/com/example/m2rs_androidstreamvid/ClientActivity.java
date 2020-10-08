@@ -145,7 +145,7 @@ public class ClientActivity extends AppCompatActivity {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void runtimePermission() {
-        Log.i(MainActivity.TAG, "MainActivity onBind");
+        Log.i(MainActivity.TAG, "Ask for permission on device.");
         Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(new PermissionListener() {
             @Override// if the permission is accepted, we launch the displaying of the music
             public void onPermissionGranted(PermissionGrantedResponse response) {
