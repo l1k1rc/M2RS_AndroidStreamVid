@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -60,7 +61,7 @@ public class ServerActivity extends AppCompatActivity {
 
         //final String downloadUrl = "https://ia800201.us.archive.org/22/items/ksnn_compilation_master_the_internet/ksnn_compilation_master_the_internet_512kb.mp4";
         errorExpected = (TextView) findViewById(R.id.errorExpected);
-        isAClientConnected = (TextView)findViewById(R.id.isAClientConnected);
+        isAClientConnected = (TextView) findViewById(R.id.isAClientConnected);
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
 
         spinner.setVisibility(View.GONE);
@@ -101,13 +102,7 @@ public class ServerActivity extends AppCompatActivity {
         btnSendFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SEND);
-                intent.setType("Download/*");
-
-                String uri = "Download/1c2.jpg";
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(uri)));
-                startActivity(intent);
+                sendFile("/downloadedfile.mp4");
             }
         });
         /*ContentValues values = new ContentValues();
@@ -120,8 +115,29 @@ public class ServerActivity extends AppCompatActivity {
 
     }
 
+    public void sendFile(String fileName) {
+
+        Log.d(MainActivity.TAG, "Sending file...");
+
+        File dir = Environment.getExternalStorageDirectory();
+        File manualFile = new File(dir, "/" + fileName);
+        Log.e(MainActivity.TAG,"MANUAL FILE DISPLAYED : "+manualFile);
+
+        Uri uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", manualFile);
+        Log.e(MainActivity.TAG,"URI DISPLAYED : "+uri);
+        String type = "application/mp4";
+
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        sharingIntent.setType(type);
+        sharingIntent.setClassName("com.android.bluetooth", "com.android.bluetooth.opp.BluetoothOppLauncherActivity");
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(sharingIntent);
+    }
+
     /**
      * Know if a file is a mp4 or wav video file.
+     *
      * @param text : the link (url)
      * @return a boolean.
      */
@@ -141,6 +157,7 @@ public class ServerActivity extends AppCompatActivity {
 
     /**
      * To get a file extension name.
+     *
      * @param fullName : name of the file
      * @return the extension
      */

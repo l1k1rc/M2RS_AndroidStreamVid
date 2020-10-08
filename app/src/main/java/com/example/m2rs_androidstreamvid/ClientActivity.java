@@ -64,7 +64,7 @@ public class ClientActivity extends AppCompatActivity {
                 for (BluetoothDevice deviceBlu : devices){
                     listNameDevice.add(deviceBlu.getName() + "\n" + deviceBlu.getAddress());
                     Log.e(MainActivity.TAG, deviceBlu.getName());
-                    Log.e(MainActivity.TAG, deviceBlu.getUuids().toString());
+                    Log.e(MainActivity.TAG, deviceBlu.getAddress());
                 }
                 ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(ClientActivity.this, android.R.layout.simple_list_item_1, listNameDevice);
                 listView.setAdapter(myAdapter);
@@ -110,11 +110,11 @@ public class ClientActivity extends AppCompatActivity {
     private final BroadcastReceiver discoveryResult = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e(MainActivity.TAG,"ES LA MERDA");
+            Log.e(MainActivity.TAG,"Try to get no appaired device");
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             String exemple = "Device found : " + device.getName();
             Log.e(MainActivity.TAG, device.getName());
-            Toast.makeText(getApplicationContext(), "GRATON", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Is detected", Toast.LENGTH_SHORT).show();
         }
     };
 
