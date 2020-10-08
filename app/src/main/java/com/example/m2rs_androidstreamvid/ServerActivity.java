@@ -3,7 +3,6 @@ package com.example.m2rs_androidstreamvid;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -117,16 +116,21 @@ public class ServerActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method to send a file from a bluetooth bridge between 2 devices. It send it into download directory phone.
+     *
+     * @param fileName : name file to send.
+     */
     public void sendFile(String fileName) {
 
         Log.d(MainActivity.TAG, "Sending file...");
 
         File dir = Environment.getExternalStorageDirectory();
         File manualFile = new File(dir, "/" + fileName);
-        Log.e(MainActivity.TAG,"MANUAL FILE DISPLAYED : "+manualFile);
+        Log.e(MainActivity.TAG, "MANUAL FILE DISPLAYED : " + manualFile);
 
         Uri uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", manualFile);
-        Log.e(MainActivity.TAG,"URI DISPLAYED : "+uri);
+        Log.e(MainActivity.TAG, "URI DISPLAYED : " + uri);
         String type = "application/mp4";
 
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -218,6 +222,9 @@ public class ServerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Private class uses to download a file with a .mp4 or .wav extension from an URL given by the user.
+     */
     @SuppressWarnings("ALL")
     private class DownloadFileFromURL extends AsyncTask<String, String, String> {
 
