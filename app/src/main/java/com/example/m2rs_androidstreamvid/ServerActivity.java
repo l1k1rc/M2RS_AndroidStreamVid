@@ -65,6 +65,7 @@ public class ServerActivity extends AppCompatActivity {
         spinner = (ProgressBar) findViewById(R.id.progressBar1);
 
         spinner.setVisibility(View.GONE);
+        btnSendFile.setVisibility(View.GONE);
         btnDonwload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -90,6 +91,7 @@ public class ServerActivity extends AppCompatActivity {
                     spinner.setVisibility(View.VISIBLE);
                     btnLaunchServer.setText("Stop stream");
                     ThrSocket.start();
+                    btnSendFile.setVisibility(View.VISIBLE);
                 } else {
                     Log.e(MainActivity.TAG, "STOP THE THREAD");
                     serverUp = false;

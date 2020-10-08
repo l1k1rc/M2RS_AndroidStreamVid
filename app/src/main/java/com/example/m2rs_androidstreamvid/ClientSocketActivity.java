@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -17,11 +19,14 @@ public class ClientSocketActivity extends AppCompatActivity {
 
     private String mDeviceAddress;
     protected ClientSocketTask mBluetoothConnection;
+    private Button btnRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_socket);
+
+        btnRefresh = (Button) findViewById(R.id.btnRefresh);
 
         Intent newIntent = getIntent();
         mDeviceAddress = newIntent.getStringExtra(ClientActivity.EXTRA_ADDRESS);
@@ -29,13 +34,16 @@ public class ClientSocketActivity extends AppCompatActivity {
         mBluetoothConnection = new ClientSocketTask(this, mDeviceAddress);
         mBluetoothConnection.execute();
 
-        /*newIntent.setAction(Intent.ACTION_SEND);
-        newIntent.setType("/");
-        newIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File("downloadedfile.mp4")));
-        Log.e(MainActivity.TAG,"INTENT USE");
-        startActivity(newIntent);*/
 
-        // Get a reference to the VideoView instance as follows, using the id we set in the XML layout.
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(getIntent());
+            }
+        });
+
+
         VideoView vidView = (VideoView)findViewById(R.id.video);
 
         // Add playback controls.
@@ -46,7 +54,7 @@ public class ClientSocketActivity extends AppCompatActivity {
         vidView.setMediaController(vidControl);
 
         File dir = Environment.getExternalStorageDirectory();
-        File manualFile = new File(dir, "/" + "/downloadedfile.mp4");
+        File manualFile = new File(dir, "/" + "Download/downloadedfile.mp4");
         Log.e(MainActivity.TAG,"CLIENT FILE LOCATION : "+manualFile);
 
         Uri uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", manualFile);
